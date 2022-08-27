@@ -1,12 +1,19 @@
-const mongoose=require('mongoose');
+const mongoose = require("mongoose");
 
-const Schema=mongoose.Schema;
-const DuKhach=new Schema({
-    ho_ten: String,
-    sdt:String,
-},{
-    timestamps:true
-})
+const Schema = mongoose.Schema;
+const NguoiDung = new Schema(
+	{
+		ho_ten: String,
+		can_nang: Number,
+		chieu_cao: Number,
+		van_dong: String,
+		calo_muc_tieu: Number,
+		tai_khoan: { type: Schema.Types.ObjectId, ref: 'tai_khoan' },
+		thong_ke: [{ type: Schema.Types.ObjectId, ref: 'thong_ke' }],
+	},
+	{
+		timestamps: true,
+	}
+);
 
-module.exports=mongoose.model('du_khach',DuKhach);
-
+module.exports = mongoose.model("nguoi_dung", NguoiDung);
