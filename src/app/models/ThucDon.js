@@ -3,9 +3,10 @@ const mongoose=require('mongoose');
 const Schema=mongoose.Schema;
 const ThucDon=new Schema({
     ten: String,
-    thanh_phan:String,
+    thanh_phan:{ type: Schema.Types.ObjectId, ref: 'chi_tiet_thuc_don' },
     bua_an:String,
-    loai_thuc_don:{ type: Schema.Types.ObjectId, ref: 'loai_thuc_don' },
+    hinh:String,
+    mo_ta:String,
 },{
     timestamps:true
 });

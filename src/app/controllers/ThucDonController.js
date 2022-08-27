@@ -3,6 +3,12 @@ class ThucDonController {
 	// [GET] /ThucDon
 	show(req, res) {
 		ThucDon.find({})
+			.populate({
+				path: "thanh_phan",
+				populate: {
+					path: "thuc_pham",
+				},
+			})
 			.lean()
 			.then((ThucDons) => res.json(ThucDons))
 			.catch((err) => {
@@ -13,6 +19,12 @@ class ThucDonController {
 	// [GET] /ThucDon/:id
 	detail(req, res) {
 		ThucDon.findById(req.params.id)
+			.populate({
+				path: "thanh_phan",
+				populate: {
+					path: "thuc_pham",
+				},
+			})
 			.lean()
 			.then((ThucDon) => res.json(ThucDon))
 			.catch((err) => {

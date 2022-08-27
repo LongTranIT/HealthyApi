@@ -3,6 +3,7 @@ class LoaiThucDonController {
 	// [GET] /LoaiThucDon
 	show(req, res) {
 		LoaiThucDon.find({})
+			.populate("thuc_don")
 			.lean()
 			.then((LoaiThucDons) => res.json(LoaiThucDons))
 			.catch((err) => {
@@ -13,6 +14,7 @@ class LoaiThucDonController {
 	// [GET] /LoaiThucDon/:id
 	detail(req, res) {
 		LoaiThucDon.findById(req.params.id)
+			.populate("thuc_don")
 			.lean()
 			.then((LoaiThucDon) => res.json(LoaiThucDon))
 			.catch((err) => {

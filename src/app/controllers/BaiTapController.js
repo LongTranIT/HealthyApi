@@ -3,6 +3,12 @@ class BaiTapController {
 	// [GET] /BaiTap
 	show(req, res) {
 		BaiTap.find({})
+			.populate({
+				path: "chi_tiet_bai_tap",
+				populate: {
+					path: "dong_tac",
+				},
+			})
 			.lean()
 			.then((BaiTaps) => res.json(BaiTaps))
 			.catch((err) => {
@@ -13,6 +19,12 @@ class BaiTapController {
 	// [GET] /BaiTap/:id
 	detail(req, res) {
 		BaiTap.findById(req.params.id)
+			.populate({
+				path: "chi_tiet_bai_tap",
+				populate: {
+					path: "dong_tac",
+				},
+			})
 			.lean()
 			.then((BaiTap) => res.json(BaiTap))
 			.catch((err) => {
