@@ -1,32 +1,30 @@
 
-const LichTrinh = require('../models/LichTrinh');
-class LichTrinhController {
-    // [GET] /LichTrinh
+const NguoiDung = require('../models/NguoiDung');
+class NguoiDungController {
+    // [GET] /NguoiDung
     show(req, res) {
-        LichTrinh.find({})
-            .populate('id_dia_diem')
+        NguoiDung.find({})
             .lean()
-            .then(LichTrinhs => res.json(LichTrinhs))
+            .then(NguoiDungs => res.json(NguoiDungs))
             .catch(err => {
                 message: err
             });
     }
 
-    // [GET] /LichTrinh/:slug
+    // [GET] /NguoiDung/:id
     detail(req, res) {
-        LichTrinh.findOne({ _id: req.params.id })
-            .populate('id_dia_diem')
+        NguoiDung.findById(req.params.id)
             .lean()
-            .then(LichTrinhs => res.json(LichTrinhs))
+            .then(NguoiDung => res.json(NguoiDung))
             .catch(err => {
                 message: err
             });
     }
 
-    //[POST] /LichTrinh
+    // [POST] /NguoiDung
     create(req, res) {
-        const lichTrinh = new LichTrinh(req.body);
-        lichTrinh.save()
+        const newData = new NguoiDung(req.body);
+        newData.save()
             .then(data => {
                 res.json(data);
             })
@@ -37,11 +35,11 @@ class LichTrinhController {
             })
     }
 
-    // [PUT] /LichTrinh/:id
+    // [PUT] /NguoiDung/:id
     update(req, res) {
-        LichTrinh.findByIdAndUpdate(req.params.id, req.body)
+        NguoiDung.findByIdAndUpdate(req.params.id, req.body)
             .lean()
-            .then(dataUpdate => res.json(dataUpdate))
+            .then(tk => res.json(tk))
             .catch(err => {
                 res.json({
                     message: err
@@ -49,9 +47,9 @@ class LichTrinhController {
             })
     }
 
-    // [DELETE] /LichTrinh/:id
+    // [DELETE] /NguoiDung/:id
     delete(req, res) {
-        LichTrinh.findByIdAndDelete(req.params.id)
+        NguoiDung.findByIdAndDelete(req.params.id)
             .lean()
             .then(dataDelete => res.json(dataDelete))
             .catch(err => {
@@ -62,4 +60,4 @@ class LichTrinhController {
     }
 }
 
-module.exports = new LichTrinhController;
+module.exports = new NguoiDungController;

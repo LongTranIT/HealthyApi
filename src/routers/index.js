@@ -1,25 +1,28 @@
-const tourRouter=require('./tour');
-const lichTrinhRouter=require('./lichTrinh');
-const diaDiemRouter=require('./diaDiem');
-const adminRouter=require('./admin');
-const huongDanVienRouter=require('./huongDanVien');
-const khachHangRouter=require('./khachHang');
-const duKhachRouter=require('./duKhach');
-const taiKhoanRouter=require('./taiKhoan');
-const thanhToanRouter=require('./ThanhToan');
-const kyThanhToanRouter=require('./KyThanhToan');
+const baiTapRouter=require('./BaiTap');
+const chatDinhDuongRouter=require('./ChatDinhDuong');
+const chiTietBaiTapRouter=require('./ChiTietBaiTap');
+const chiTietThucDonRouter=require('./ChiTietThucDon');
+const dongTacRouter=require('./DongTac');
+const loaiThucDonRouter=require('./LoaiThucDon');
+const nguoiDungRouter=require('./NguoiDung');
+const taiKhoanRouter=require('./TaiKhoan');
+const thongKeRouter=require('./ThongKe');
+const thucDonRouter=require('./ThucDon');
+const thucPhamRouter=require('./ThucPham');
 
 function route(app){
-    app.use('/tour',tourRouter);
-    app.use('/lichtrinh',lichTrinhRouter);
-    app.use('/diadiem',diaDiemRouter);
-    app.use('/admin',adminRouter);
-    app.use('/huongDanVien',huongDanVienRouter);
-    app.use('/khachHang',khachHangRouter);
-    app.use('/duKhach',duKhachRouter);
     app.use('/taiKhoan',taiKhoanRouter);
-    app.use('/thanhtoan',thanhToanRouter);
-    app.use('/kyThanhtoan',kyThanhToanRouter);
+    app.use('/baiTap',baiTapRouter);
+    app.use('/chatDinhDuong',chatDinhDuongRouter);
+    app.use('/chiTietBaiTap',chiTietBaiTapRouter);
+    app.use('/chiTietThucDon',chiTietThucDonRouter);
+    app.use('/dongTac',dongTacRouter);
+    app.use('/loaiThucDon',loaiThucDonRouter);
+    app.use('/nguoiDung',nguoiDungRouter);
+    app.use('/thongKe',thongKeRouter);
+    app.use('/thucDon',thucDonRouter);
+    app.use('/thucDon',thucDonRouter);
+    app.use('/thucPham',thucPhamRouter);
 }
 
 module.exports=route;
