@@ -1,5 +1,5 @@
 
-const DuKhach = require('../models/DuKhach');
+const DuKhach = require('../models/NguoiDung');
 class DuKhachController {
     // [GET] /DuKhach
     show(req, res) {
