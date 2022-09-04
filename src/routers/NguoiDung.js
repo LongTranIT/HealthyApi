@@ -7,6 +7,7 @@ router.get('/',NguoiDungController.show);
 router.get('/:id',NguoiDungController.detail);
 router.post('/',NguoiDungController.create);
 router.put('/:id',NguoiDungController.update);
+router.patch('/:id',NguoiDungController.updatePatch);
 router.delete('/:id',NguoiDungController.delete);
 
 module.exports=router;

@@ -94,6 +94,18 @@ class NguoiDungController {
 				});
 			});
 	}
+	// [PUT] /NguoiDung/:id
+	updatePatch(req, res) {
+		const updateObject=req.body
+		NguoiDung.findByIdAndUpdate(req.params.id,  { $set: updateObject })
+			.lean()
+			.then((tk) => res.json(tk))
+			.catch((err) => {
+				res.json({
+					message: err,
+				});
+			});
+	}
 
 	// [DELETE] /NguoiDung/:id
 	delete(req, res) {
