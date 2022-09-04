@@ -5,13 +5,13 @@ const chiTietThucDonRouter=require('./ChiTietThucDon');
 const dongTacRouter=require('./DongTac');
 const loaiThucDonRouter=require('./LoaiThucDon');
 const nguoiDungRouter=require('./NguoiDung');
-const taiKhoanRouter=require('./taiKhoan');
+// const taiKhoanRouter=require('./taiKhoan');
 const thongKeRouter=require('./ThongKe');
 const thucDonRouter=require('./ThucDon');
 const thucPhamRouter=require('./ThucPham');
 
 function route(app){
-    app.use('/taiKhoan',taiKhoanRouter);
+    // app.use('/taiKhoan',taiKhoanRouter);
     app.use('/baiTap',baiTapRouter);
     app.use('/chatDinhDuong',chatDinhDuongRouter);
     app.use('/chiTietBaiTap',chiTietBaiTapRouter);
