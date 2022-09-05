@@ -9,6 +9,7 @@ const taiKhoanRouter=require('./TaiKhoan');
 const thongKeRouter=require('./ThongKe');
 const thucDonRouter=require('./ThucDon');
 const thucPhamRouter=require('./ThucPham');
+const loginRouter=require('./Login');
 
 function route(app){
     app.use('/taiKhoan',taiKhoanRouter);
@@ -23,6 +24,7 @@ function route(app){
     app.use('/thucDon',thucDonRouter);
     app.use('/thucDon',thucDonRouter);
     app.use('/thucPham',thucPhamRouter);
+    app.use('/login',loginRouter);
 }
 
 module.exports=route;
