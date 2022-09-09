@@ -1,5 +1,4 @@
 const baiTapRouter=require('./BaiTap');
-const chatDinhDuongRouter=require('./ChatDinhDuong');
 const chiTietBaiTapRouter=require('./ChiTietBaiTap');
 const chiTietThucDonRouter=require('./ChiTietThucDon');
 const dongTacRouter=require('./DongTac');
@@ -14,7 +13,6 @@ const loginRouter=require('./Login');
 function route(app){
     app.use('/taiKhoan',taiKhoanRouter);
     app.use('/baiTap',baiTapRouter);
-    app.use('/chatDinhDuong',chatDinhDuongRouter);
     app.use('/chiTietBaiTap',chiTietBaiTapRouter);
     app.use('/chiTietThucDon',chiTietThucDonRouter);
     app.use('/dongTac',dongTacRouter);

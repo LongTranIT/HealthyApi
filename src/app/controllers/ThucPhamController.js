@@ -3,7 +3,6 @@ class ThucPhamController {
 	// [GET] /ThucPham
 	show(req, res) {
 		ThucPham.find({})
-			.populate("chat_dinh_duong")
 			.lean()
 			.then((ThucPhams) => res.json(ThucPhams))
 			.catch((err) => {
@@ -14,7 +13,6 @@ class ThucPhamController {
 	// [GET] /ThucPham/:id
 	detail(req, res) {
 		ThucPham.findById(req.params.id)
-			.populate("chat_dinh_duong")
 			.lean()
 			.then((ThucPham) => res.json(ThucPham))
 			.catch((err) => {
