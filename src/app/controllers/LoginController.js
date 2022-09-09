@@ -3,31 +3,7 @@ class LoginController {
 	// [POST] /login
 	login(req, res) {
 		const account=req.body;
-		NguoiDung.find({})
-			.populate("tai_khoan")
-			.populate({
-				path: "thong_ke",
-				populate: [
-					{
-						path: "thuc_don",
-						populate: {
-							path: "thanh_phan",
-							populate: {
-								path: "thuc_pham",
-							},
-						},
-					},
-					{
-						path: "bai_tap",
-						populate: {
-							path: "chi_tiet_bai_tap",
-							populate: {
-								path: "dong_tac",
-							},
-						},
-					},
-				],
-			})
+		NguoiDung.find({})			
 			.lean()
 			.then((NguoiDungs) =>{
 				const result=NguoiDungs.find(item=>
