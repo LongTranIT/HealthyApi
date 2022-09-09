@@ -3,7 +3,8 @@ class LoginController {
 	// [POST] /login
 	login(req, res) {
 		const account=req.body;
-		NguoiDung.find({})			
+		NguoiDung.find({})	
+			.populate('tai_khoan')		
 			.lean()
 			.then((NguoiDungs) =>{
 				const result=NguoiDungs.find(item=>
@@ -11,6 +12,7 @@ class LoginController {
 					&&
 					item.tai_khoan.password===account.password
 				)
+				delete result?.tai_khoan
 				res.json(result||{message: 'Invalid account'})
 			})
 			.catch((err) => {
