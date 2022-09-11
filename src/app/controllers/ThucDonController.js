@@ -1,4 +1,5 @@
 const ThucDon = require("../models/ThucDon");
+const ChiTietThucDon = require("../models/ChiTietThucDon");
 class ThucDonController {
 	// [GET] /ThucDon
 	show(req, res) {
@@ -10,7 +11,9 @@ class ThucDonController {
 				},
 			})
 			.lean()
-			.then((ThucDons) => res.json(ThucDons))
+			.then((ThucDons) => {
+				res.json(ThucDons);
+			})
 			.catch((err) => {
 				message: err;
 			});
@@ -26,7 +29,9 @@ class ThucDonController {
 				},
 			})
 			.lean()
-			.then((ThucDon) => res.json(ThucDon))
+			.then((ThucDon) => {
+				res.json(ThucDon);
+			})
 			.catch((err) => {
 				message: err;
 			});
@@ -35,16 +40,31 @@ class ThucDonController {
 	// [POST] /ThucDon
 	create(req, res) {
 		const newData = new ThucDon(req.body);
-		newData
-			.save()
-			.then((data) => {
-				res.json(data);
-			})
-			.catch((err) => {
-				res.json({
-					message: err,
-				});
+		let promises = newData.thanh_phan.map((ThucDonDetail) => {
+			return ChiTietThucDon.findById(ThucDonDetail)
+				.populate({
+					path: "thuc_pham",
+				})
+				.lean();
+		});
+		Promise.all(promises).then((ChiTietThucDons) => {
+			let caloTotal = 0;
+			ChiTietThucDons.forEach((item) => {
+				let caloThucPham = (item.so_luong / 100) * item.thuc_pham.calo;
+				caloTotal += caloThucPham;
 			});
+			newData.calo = caloTotal;
+			newData
+				.save()
+				.then((data) => {
+					res.json(data);
+				})
+				.catch((err) => {
+					res.json({
+						message: err,
+					});
+				});
+		});
 	}
 
 	// [PUT] /ThucDon/:id

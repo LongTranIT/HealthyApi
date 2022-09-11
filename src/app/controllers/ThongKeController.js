@@ -24,7 +24,9 @@ class ThongKeController {
 				},
 			])
 			.lean()
-			.then((ThongKes) => res.json(ThongKes))
+			.then((ThongKes) => {
+				res.json(ThongKes)
+			})
 			.catch((err) => {
 				message: err;
 			});
@@ -54,7 +56,14 @@ class ThongKeController {
 				},
 			])
 			.lean()
-			.then((ThongKe) => res.json(ThongKe))
+			.then((ThongKe) => {
+				let caloGetTotal=0
+				ThongKe.thuc_don.forEach(item=>{
+					caloGetTotal+=item.calo
+				})
+				ThongKe.calo_nap=caloGetTotal
+				res.json(ThongKe)
+			})
 			.catch((err) => {
 				message: err;
 			});

@@ -7,6 +7,7 @@ const ThucDon=new Schema({
     bua_an:String,
     hinh:String,
     mo_ta:String,
+    calo: Number
 },{
     timestamps:true
 });
