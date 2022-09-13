@@ -39,14 +39,18 @@ class LoaiThucDonController {
 
 	// [PUT] /LoaiThucDon/:id
 	update(req, res) {
-		LoaiThucDon.findByIdAndUpdate(req.params.id, req.body)
-			.lean()
-			.then((tk) => res.json(tk))
-			.catch((err) => {
-				res.json({
-					message: err,
+		const { idThucDon } = req.body;
+		LoaiThucDon.findById(req.params.id).then((loaiThucDons) => {
+			loaiThucDons.thanh_phan.push(idThucDon);
+			LoaiThucDon.findByIdAndUpdate(req.params.id, loaiThucDons)
+				.lean()
+				.then((tk) => res.json(tk))
+				.catch((err) => {
+					res.json({
+						message: err,
+					});
 				});
-			});
+		});
 	}
 
 	// [DELETE] /LoaiThucDon/:id
