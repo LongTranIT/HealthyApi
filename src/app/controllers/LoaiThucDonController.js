@@ -41,7 +41,8 @@ class LoaiThucDonController {
 	update(req, res) {
 		const { idThucDon } = req.body;
 		LoaiThucDon.findById(req.params.id).then((loaiThucDons) => {
-			loaiThucDons.thanh_phan.push(idThucDon);
+			loaiThucDons.thuc_don.push(idThucDon);
+			console.log(loaiThucDons);
 			LoaiThucDon.findByIdAndUpdate(req.params.id, loaiThucDons)
 				.lean()
 				.then((tk) => res.json(tk))
