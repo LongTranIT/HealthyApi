@@ -25,7 +25,7 @@ class ThongKeController {
 			])
 			.lean()
 			.then((ThongKes) => {
-				res.json(ThongKes)
+				res.json(ThongKes);
 			})
 			.catch((err) => {
 				message: err;
@@ -57,12 +57,12 @@ class ThongKeController {
 			])
 			.lean()
 			.then((ThongKe) => {
-				let caloGetTotal=0
-				ThongKe.thuc_don.forEach(item=>{
-					caloGetTotal+=item.calo
-				})
-				ThongKe.calo_nap=caloGetTotal
-				res.json(ThongKe)
+				let caloGetTotal = 0;
+				ThongKe.thuc_don.forEach((item) => {
+					caloGetTotal += item.calo;
+				});
+				ThongKe.calo_nap = caloGetTotal;
+				res.json(ThongKe);
 			})
 			.catch((err) => {
 				message: err;
@@ -71,17 +71,38 @@ class ThongKeController {
 
 	// [POST] /ThongKe
 	create(req, res) {
-		const newData = new ThongKe(req.body);
-		newData
-			.save()
-			.then((data) => {
-				res.json(data);
-			})
-			.catch((err) => {
-				res.json({
-					message: err,
-				});
+		const { ngay, idThucDon } = req.body;
+		ThongKe.find({}).then((tks) => {
+			const tkUpdate = tks.find((item) => {
+				return +new Date(item.ngay) == +new Date(ngay);
 			});
+			if (tkUpdate) {
+				tkUpdate.thuc_don.push(idThucDon);
+				ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate).then(
+					(result) => res.json(result)
+				);
+			} else {
+				const newTk =new ThongKe({
+					ngay,
+					thuc_don: [idThucDon],
+					bai_tap: [],
+				});
+				newTk.save().then((data) => {
+					res.json(data);
+				});
+			}
+		});
+		// const newData = new ThongKe(req.body);
+		// newData
+		// 	.save()
+		// 	.then((data) => {
+		// 		res.json(data);
+		// 	})
+		// 	.catch((err) => {
+		// 		res.json({
+		// 			message: err,
+		// 		});
+		// 	});
 	}
 
 	// [PUT] /ThongKe/:id

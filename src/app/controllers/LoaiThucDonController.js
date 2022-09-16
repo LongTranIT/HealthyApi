@@ -41,11 +41,8 @@ class LoaiThucDonController {
 	// [PUT] /LoaiThucDon/:id
 	update(req, res) {
 		const { idThucDon } = req.body;
-		// var id = new mongoose.mongo.ObjectId(idThucDon);
 		LoaiThucDon.findById(req.params.id).then((loaiThucDons) => {
 			loaiThucDons.thuc_don.push(idThucDon);
-			console.log(loaiThucDons.thuc_don);
-			// console.log(id);
 			LoaiThucDon.findByIdAndUpdate(req.params.id, loaiThucDons)
 				.lean()
 				.then((tk) => res.json(tk))
