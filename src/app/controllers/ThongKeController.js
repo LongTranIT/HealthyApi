@@ -3,7 +3,8 @@ const ThucDon = require("../models/ThucDon");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
-		if (req.query) {
+		console.log(req.query.ngay||req.query.startDate);
+		if (req.query.ngay||req.query.startDate) {
 			ThongKe.find({}).then((tks) => {
 				//Thống kê theo ngày
 				if (req.query.ngay) {
