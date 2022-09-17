@@ -31,7 +31,7 @@ class ThongKeController {
 			})
 			.lean()
 			.then((nd) => {
-				const tks=nd.thong_ke;
+				const tks = nd.thong_ke;
 				//Thống kê theo ngày
 				if (req.query.ngay) {
 					const tkNeed = tks.find((item) => {
@@ -62,7 +62,7 @@ class ThongKeController {
 					res.json({
 						calo_in_total: caloInStatictis,
 						calo_out_total: caloOutStatictis,
-					})
+					});
 				}
 				//Get all
 				else {
@@ -111,42 +111,46 @@ class ThongKeController {
 	// [POST] /ThongKe
 	create(req, res) {
 		const { ngay, idThucDon, idNguoiDung } = req.body;
-		Promise.all([NguoiDung.findById(idNguoiDung).populate('thong_ke'), ThucDon.findById(idThucDon)]).then(
-			([nguoiDungData, td]) => {
-				const tks=nguoiDungData.thong_ke;
-				const tkUpdate = tks.find((item) => {
-					return +new Date(item.ngay) == +new Date(ngay);
+		Promise.all([
+			NguoiDung.findById(idNguoiDung).populate("thong_ke"),
+			ThucDon.findById(idThucDon),
+		]).then(([nguoiDungData, td]) => {
+			const tks = nguoiDungData.thong_ke;
+			const tkUpdate = tks.find((item) => {
+				return +new Date(item.ngay) == +new Date(ngay);
+			});
+			if (tkUpdate) {
+				tkUpdate.thuc_don.push(idThucDon);
+				tkUpdate.calo_nap += td?.calo || 0;
+
+				ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate,{new:true}).then(
+					(result) => {
+						res.json(result)
+					}
+				);
+			} else {
+				const newTk = new ThongKe({
+					ngay,
+					thuc_don: [idThucDon],
+					bai_tap: [],
+					calo_nap: td?.calo,
+					calo_tieu: 0,
 				});
-				if (tkUpdate) {
-					tkUpdate.thuc_don.push(idThucDon);
-					tkUpdate.calo_nap += td?.calo||0;
-					ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate).then(
-						(result) => res.json(result)
-					);
-				} else {
-					const newTk = new ThongKe({
-						ngay,
-						thuc_don: [idThucDon],
-						bai_tap: [],
-						calo_nap: td?.calo,
-						calo_tieu: 0,
-					});
-					newTk.save().then((data) => {
-						NguoiDung.findById(idNguoiDung).then((nd) => {
-							nd.thong_ke.push(data['_id']);
-							NguoiDung.findByIdAndUpdate(idNguoiDung, nd)
-								.lean()
-								.then((tk) => res.json(data))
-								.catch((err) => {
-									res.json({
-										message: err,
-									});
+				newTk.save().then((data) => {
+					NguoiDung.findById(idNguoiDung).then((nd) => {
+						nd.thong_ke.push(data["_id"]);
+						NguoiDung.findByIdAndUpdate(idNguoiDung, nd)
+							.lean()
+							.then((tk) => res.json(data))
+							.catch((err) => {
+								res.json({
+									message: err,
 								});
-						});
-					})
-				}
+							});
+					});
+				});
 			}
-		);
+		});
 		// const newData = new ThongKe(req.body);
 		// newData
 		// 	.save()
