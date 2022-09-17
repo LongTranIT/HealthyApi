@@ -4,7 +4,7 @@ const NguoiDung = require("../models/NguoiDung");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
-		NguoiDung.findById(req.params.id)
+		NguoiDung.findById(req.query.idNguoiDung)
 			.populate("tai_khoan")
 			.populate({
 				path: "thong_ke",
