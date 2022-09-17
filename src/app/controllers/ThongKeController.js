@@ -60,7 +60,7 @@ class ThongKeController {
 				}
 				//Get all
 				else {
-					res.json(ThongKes);
+					res.json(tks);
 				}
 			});
 	}
