@@ -40,8 +40,8 @@ class LoaiThucDonController {
 
 	// [PUT] /LoaiThucDon/:id
 	update(req, res) {
-		const { idThucDon } = req.body;
-		LoaiThucDon.findById(req.params.id).then((loaiThucDons) => {
+		const { idThucDon, idNguoiDung } = req.body;
+		LoaiThucDon.find({nguoi_xem: idNguoiDung}).then((loaiThucDons) => {
 			loaiThucDons.thuc_don.push(idThucDon);
 			LoaiThucDon.findByIdAndUpdate(req.params.id, loaiThucDons)
 				.lean()
