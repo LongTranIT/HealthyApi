@@ -3,9 +3,29 @@ const ThucDon = require("../models/ThucDon");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
-		console.log(req.query.ngay||req.query.startDate);
-		if (req.query.ngay||req.query.startDate) {
-			ThongKe.find({}).then((tks) => {
+		ThongKe.find({})
+			.populate([
+				{
+					path: "thuc_don",
+					populate: {
+						path: "thanh_phan",
+						populate: {
+							path: "thuc_pham",
+						},
+					},
+				},
+				{
+					path: "bai_tap",
+					populate: {
+						path: "chi_tiet_bai_tap",
+						populate: {
+							path: "dong_tac",
+						},
+					},
+				},
+			])
+			.lean()
+			.then((tks) => {
 				//Thống kê theo ngày
 				if (req.query.ngay) {
 					const tkNeed = tks.find((item) => {
@@ -37,41 +57,12 @@ class ThongKeController {
 						calo_in_total: caloInStatictis,
 						calo_out_total: caloOutStatictis,
 					});
-				} else {
+				}
+				//Get all
+				else {
+					res.json(ThongKes);
 				}
 			});
-		}
-		//Get all
-		else {
-			ThongKe.find({})
-				.populate([
-					{
-						path: "thuc_don",
-						populate: {
-							path: "thanh_phan",
-							populate: {
-								path: "thuc_pham",
-							},
-						},
-					},
-					{
-						path: "bai_tap",
-						populate: {
-							path: "chi_tiet_bai_tap",
-							populate: {
-								path: "dong_tac",
-							},
-						},
-					},
-				])
-				.lean()
-				.then((ThongKes) => {
-					res.json(ThongKes);
-				})
-				.catch((err) => {
-					message: err;
-				});
-		}
 	}
 
 	// [GET] /ThongKe/:id
