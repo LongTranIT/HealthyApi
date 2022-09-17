@@ -30,7 +30,8 @@ class ThongKeController {
 				],
 			})
 			.lean()
-			.then((tks) => {
+			.then((nd) => {
+				const tks=nd.thong_ke;
 				//Thống kê theo ngày
 				if (req.query.ngay) {
 					const tkNeed = tks.find((item) => {
