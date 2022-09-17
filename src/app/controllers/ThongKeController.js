@@ -61,7 +61,7 @@ class ThongKeController {
 					res.json({
 						calo_in_total: caloInStatictis,
 						calo_out_total: caloOutStatictis,
-					});
+					})
 				}
 				//Get all
 				else {
