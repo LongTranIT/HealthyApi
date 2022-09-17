@@ -1,5 +1,6 @@
 const ThongKe = require("../models/ThongKe");
 const ThucDon = require("../models/ThucDon");
+const NguoiDung = require("../models/NguoiDung");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
@@ -104,7 +105,7 @@ class ThongKeController {
 
 	// [POST] /ThongKe
 	create(req, res) {
-		const { ngay, idThucDon } = req.body;
+		const { ngay, idThucDon, idNguoiDung } = req.body;
 		Promise.all([ThongKe.find({}), ThucDon.findById(idThucDon)]).then(
 			([tks, td]) => {
 				const tkUpdate = tks.find((item) => {
@@ -125,7 +126,17 @@ class ThongKeController {
 						calo_tieu: 0,
 					});
 					newTk.save().then((data) => {
-						res.json(data);
+						NguoiDung.findById(idNguoiDung).then((nd) => {
+							nd.thong_ke.push(data['_id']);
+							NguoiDung.findByIdAndUpdate(idNguoiDung, nd)
+								.lean()
+								.then((tk) => res.json(data))
+								.catch((err) => {
+									res.json({
+										message: err,
+									});
+								});
+						});
 					});
 				}
 			}

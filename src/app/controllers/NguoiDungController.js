@@ -88,7 +88,6 @@ class NguoiDungController {
 		const { idThongKe } = req.body;
 		NguoiDung.findById(req.params.id).then((nd)=>{
 			nd.thong_ke.push(idThongKe);
-			console.log(nd);
 			NguoiDung.findByIdAndUpdate(req.params.id, nd)
 			.lean()
 			.then((tk) => res.json(tk))
