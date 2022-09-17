@@ -1,35 +1,63 @@
 const ThongKe = require("../models/ThongKe");
+const ThucDon =require("../models/ThucDon");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
-		ThongKe.find({})
-			.populate([
-				{
-					path: "thuc_don",
-					populate: {
-						path: "thanh_phan",
-						populate: {
-							path: "thuc_pham",
-						},
-					},
-				},
-				{
-					path: "bai_tap",
-					populate: {
-						path: "chi_tiet_bai_tap",
-						populate: {
-							path: "dong_tac",
-						},
-					},
-				},
-			])
-			.lean()
-			.then((ThongKes) => {
-				res.json(ThongKes);
-			})
-			.catch((err) => {
-				message: err;
-			});
+		ThongKe.find({}).then((tks) => {
+			//Thống kê theo ngày
+			if(req.query.ngay){
+				const tkNeed = tks.find((item) => {
+					return +new Date(item.ngay) == +new Date(req.query.ngay)
+				});
+				if (tkNeed) {
+					res.status(200).json(tkNeed)
+				} else {
+					res.status(404).json({message: "Không tìm thấy!"})
+				}
+			}
+			//Thống kê theo vùng lựa chọn
+			else if(req.query.startDate&&req.query.endDate){
+				const tkFilter= tks.filter(item=>
+					+new Date(item.ngay) >= +new Date(req.query.startDate)
+					&&
+					+new Date(item.ngay) <= +new Date(req.query.endDate)
+				)
+				const caloInStatictis=tkFilter.map(item=>item.calo_nap)
+				const caloOutStatictis=tkFilter.map(item=>item.calo_tieu)
+				res.json({
+					calo_in_total: caloInStatictis,
+					calo_out_total: caloOutStatictis
+				})
+			}
+		});
+		// ThongKe.find({})
+		// 	.populate([
+		// 		{
+		// 			path: "thuc_don",
+		// 			populate: {
+		// 				path: "thanh_phan",
+		// 				populate: {
+		// 					path: "thuc_pham",
+		// 				},
+		// 			},
+		// 		},
+		// 		{
+		// 			path: "bai_tap",
+		// 			populate: {
+		// 				path: "chi_tiet_bai_tap",
+		// 				populate: {
+		// 					path: "dong_tac",
+		// 				},
+		// 			},
+		// 		},
+		// 	])
+		// 	.lean()
+		// 	.then((ThongKes) => {
+		// 		res.json(ThongKes);
+		// 	})
+		// 	.catch((err) => {
+		// 		message: err;
+		// 	});
 	}
 
 	// [GET] /ThongKe/:id
@@ -72,26 +100,30 @@ class ThongKeController {
 	// [POST] /ThongKe
 	create(req, res) {
 		const { ngay, idThucDon } = req.body;
-		ThongKe.find({}).then((tks) => {
-			const tkUpdate = tks.find((item) => {
-				return +new Date(item.ngay) == +new Date(ngay);
+		Promise.all([ThongKe.find({}), ThucDon.findById(idThucDon)])
+			.then(([tks,td])=>{
+				const tkUpdate = tks.find((item) => {
+					return +new Date(item.ngay) == +new Date(ngay);
+				});
+				if (tkUpdate) {
+					tkUpdate.thuc_don.push(idThucDon);
+					tkUpdate.calo_nap+=td.calo
+					ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate).then(
+						(result) => res.json(result)
+					);
+				} else {
+					const newTk =new ThongKe({
+						ngay,
+						thuc_don: [idThucDon],
+						bai_tap: [],
+						calo_nap: td.calo,
+						calo_tieu: 0
+					});
+					newTk.save().then((data) => {
+						res.json(data);
+					});
+				}
 			});
-			if (tkUpdate) {
-				tkUpdate.thuc_don.push(idThucDon);
-				ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate).then(
-					(result) => res.json(result)
-				);
-			} else {
-				const newTk =new ThongKe({
-					ngay,
-					thuc_don: [idThucDon],
-					bai_tap: [],
-				});
-				newTk.save().then((data) => {
-					res.json(data);
-				});
-			}
-		});
 		// const newData = new ThongKe(req.body);
 		// newData
 		// 	.save()
