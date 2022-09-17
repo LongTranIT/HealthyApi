@@ -85,7 +85,11 @@ class NguoiDungController {
 
 	// [PUT] /NguoiDung/:id
 	update(req, res) {
-		NguoiDung.findByIdAndUpdate(req.params.id, req.body)
+		const { idThongKe } = req.body;
+		NguoiDung.findById(req.params.id).then((nd)=>{
+			nd.thong_ke.push(idThongKe);
+			console.log(nd);
+			NguoiDung.findByIdAndUpdate(req.params.id, nd)
 			.lean()
 			.then((tk) => res.json(tk))
 			.catch((err) => {
@@ -93,8 +97,9 @@ class NguoiDungController {
 					message: err,
 				});
 			});
+		})
 	}
-	// [PUT] /NguoiDung/:id
+	// [Patch] /NguoiDung/:id
 	updatePatch(req, res) {
 		const updateObject=req.body
 		NguoiDung.findByIdAndUpdate(req.params.id,  { $set: updateObject })
