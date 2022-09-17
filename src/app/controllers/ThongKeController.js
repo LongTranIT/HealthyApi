@@ -111,8 +111,9 @@ class ThongKeController {
 	// [POST] /ThongKe
 	create(req, res) {
 		const { ngay, idThucDon, idNguoiDung } = req.body;
-		Promise.all([ThongKe.find({}), ThucDon.findById(idThucDon)]).then(
-			([tks, td]) => {
+		Promise.all([NguoiDung.findById(idNguoiDung), ThucDon.findById(idThucDon)]).then(
+			([nguoiDungData, td]) => {
+				const tks=nguoiDungData.thong_ke;
 				const tkUpdate = tks.find((item) => {
 					return +new Date(item.ngay) == +new Date(ngay);
 				});
