@@ -111,7 +111,7 @@ class ThongKeController {
 	// [POST] /ThongKe
 	create(req, res) {
 		const { ngay, idThucDon, idNguoiDung } = req.body;
-		Promise.all([NguoiDung.findById(idNguoiDung), ThucDon.findById(idThucDon)]).then(
+		Promise.all([NguoiDung.findById(idNguoiDung).populate('thong_ke'), ThucDon.findById(idThucDon)]).then(
 			([nguoiDungData, td]) => {
 				const tks=nguoiDungData.thong_ke;
 				const tkUpdate = tks.find((item) => {
@@ -119,7 +119,7 @@ class ThongKeController {
 				});
 				if (tkUpdate) {
 					tkUpdate.thuc_don.push(idThucDon);
-					tkUpdate.calo_nap += td.calo;
+					tkUpdate.calo_nap += td?.calo||0;
 					ThongKe.findByIdAndUpdate(tkUpdate["_id"], tkUpdate).then(
 						(result) => res.json(result)
 					);
@@ -128,7 +128,7 @@ class ThongKeController {
 						ngay,
 						thuc_don: [idThucDon],
 						bai_tap: [],
-						calo_nap: td.calo,
+						calo_nap: td?.calo,
 						calo_tieu: 0,
 					});
 					newTk.save().then((data) => {
