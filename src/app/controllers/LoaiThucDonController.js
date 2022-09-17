@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 class LoaiThucDonController {
 	// [GET] /LoaiThucDon
 	show(req, res) {
-		LoaiThucDon.find({})
+		LoaiThucDon.find({$or:[{nguoi_xem: req.query.idNguoiDung},{nguoi_xem: 'all'}]})
 			.populate("thuc_don")
 			.lean()
 			.then((LoaiThucDons) => res.json(LoaiThucDons))
