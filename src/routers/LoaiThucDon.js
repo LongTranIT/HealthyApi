@@ -6,7 +6,7 @@ const LoaiThucDonController=require('../app/controllers/LoaiThucDonController');
 router.get('/',LoaiThucDonController.show);
 router.get('/:id',LoaiThucDonController.detail);
 router.post('/',LoaiThucDonController.create);
-router.put('/:id',LoaiThucDonController.update);
+router.put('/',LoaiThucDonController.update);
 router.delete('/:id',LoaiThucDonController.delete);
 
 module.exports=router;
