@@ -127,6 +127,7 @@ class ThongKeController {
 					});
 					newTk.save().then((data) => {
 						NguoiDung.findById(idNguoiDung).then((nd) => {
+							console.log(nd);
 							nd.thong_ke.push(data['_id']);
 							NguoiDung.findByIdAndUpdate(idNguoiDung, nd)
 								.lean()
