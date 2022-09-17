@@ -4,27 +4,31 @@ const NguoiDung = require("../models/NguoiDung");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
-		ThongKe.find({})
-			.populate([
-				{
-					path: "thuc_don",
-					populate: {
-						path: "thanh_phan",
+		NguoiDung.findById(req.params.id)
+			.populate("tai_khoan")
+			.populate({
+				path: "thong_ke",
+				populate: [
+					{
+						path: "thuc_don",
 						populate: {
-							path: "thuc_pham",
+							path: "thanh_phan",
+							populate: {
+								path: "thuc_pham",
+							},
 						},
 					},
-				},
-				{
-					path: "bai_tap",
-					populate: {
-						path: "chi_tiet_bai_tap",
+					{
+						path: "bai_tap",
 						populate: {
-							path: "dong_tac",
+							path: "chi_tiet_bai_tap",
+							populate: {
+								path: "dong_tac",
+							},
 						},
 					},
-				},
-			])
+				],
+			})
 			.lean()
 			.then((tks) => {
 				//Thống kê theo ngày
