@@ -32,13 +32,13 @@ class ThongKeController {
 			.lean()
 			.then((nd) => {
 				let tks = nd.thong_ke;
-				tks=tks.map(tk=>{
-					tk.calo_nap=0;
-					tk.thuc_don.forEach(item=>{
-						tk.calo_nap+=item.calo
-					})
-					return tk
-				})
+				tks = tks.map((tk) => {
+					tk.calo_nap = 0;
+					tk.thuc_don.forEach((item) => {
+						tk.calo_nap += item.calo;
+					});
+					return tk;
+				});
 				//Thống kê theo ngày
 				if (req.query.ngay) {
 					const tkNeed = tks.find((item) => {
@@ -78,6 +78,18 @@ class ThongKeController {
 			});
 	}
 
+	// [GET] /ThongKe/date
+	getDates(req, res) {
+		NguoiDung.findById(req.body.idNguoiDung)
+			.populate('thong_ke')
+			.then((result) => {
+				const dates=result.thong_ke.map(item=>item.ngay)
+				res.json(dates);
+			})
+			.catch((err) => {
+				message: err;
+			});
+	}
 	// [GET] /ThongKe/:id
 	detail(req, res) {
 		ThongKe.findById(req.params.id)

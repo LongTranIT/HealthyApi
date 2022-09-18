@@ -4,6 +4,7 @@ const router=express.Router();
 const ThongKeController=require('../app/controllers/ThongKeController');
 
 router.get('/',ThongKeController.show);
+router.get('/date',ThongKeController.getDates);
 router.get('/:id',ThongKeController.detail);
 router.post('/',ThongKeController.create);
 router.put('/:id',ThongKeController.update);
