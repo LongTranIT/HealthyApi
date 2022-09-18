@@ -31,7 +31,14 @@ class ThongKeController {
 			})
 			.lean()
 			.then((nd) => {
-				const tks = nd.thong_ke;
+				let tks = nd.thong_ke;
+				tks=tks.map(tk=>{
+					tk.calo_nap=0;
+					tk.thuc_don.forEach(item=>{
+						tk.calo_nap+=item.calo
+					})
+					return tk
+				})
 				//Thống kê theo ngày
 				if (req.query.ngay) {
 					const tkNeed = tks.find((item) => {
