@@ -121,7 +121,7 @@ class ThongKeController {
 			});
 			if (tkUpdate) {
 				tkUpdate.thuc_don.push(idThucDon);
-				tkUpdate.calo_nap += td?.calo || 0;
+				tkUpdate.calo_nap += td.calo;
 
 				ThongKe.findByIdAndUpdate(tkUpdate["_id"], {$set:{thuc_don:tkUpdate.thuc_don}},{new:true}).then(
 					(result) => {
