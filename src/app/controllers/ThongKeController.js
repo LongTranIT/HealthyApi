@@ -80,7 +80,7 @@ class ThongKeController {
 
 	// [GET] /ThongKe/date
 	getDates(req, res) {
-		NguoiDung.findById(req.body.idNguoiDung)
+		NguoiDung.findById(req.query.idNguoiDung)
 			.populate('thong_ke')
 			.then((result) => {
 				const dates=result.thong_ke.map(item=>item.ngay)
