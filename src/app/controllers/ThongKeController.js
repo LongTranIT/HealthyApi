@@ -123,11 +123,18 @@ class ThongKeController {
 				tkUpdate.thuc_don.push(idThucDon);
 				tkUpdate.calo_nap += td.calo;
 
-				ThongKe.findByIdAndUpdate(tkUpdate["_id"], {$set:{thuc_don:tkUpdate.thuc_don}},{new:true}).then(
-					(result) => {
-						res.json(result)
-					}
-				);
+				ThongKe.findByIdAndUpdate(
+					tkUpdate["_id"],
+					{
+						$set: {
+							thuc_don: tkUpdate.thuc_don,
+							calo_nap: tkUpdate.calo_nap,
+						},
+					},
+					{ new: true }
+				).then((result) => {
+					res.json(result);
+				});
 			} else {
 				const newTk = new ThongKe({
 					ngay,
