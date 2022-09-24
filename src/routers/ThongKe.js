@@ -8,6 +8,7 @@ router.get('/date',ThongKeController.getDates);
 router.get('/:id',ThongKeController.detail);
 router.post('/',ThongKeController.create);
 router.put('/:id',ThongKeController.update);
+router.patch('/:id',ThongKeController.updatePatch);
 router.delete('/:id',ThongKeController.delete);
 
 module.exports=router;

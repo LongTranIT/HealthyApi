@@ -61,15 +61,13 @@ class ThongKeController {
 							+new Date(item.ngay) <= +new Date(req.query.endDate)
 					);
 					const caloInStatictis = tkFilter.map(
-						(item) => item.calo_nap
+						(item) => {
+						item.calo_nap}
 					);
 					const caloOutStatictis = tkFilter.map(
 						(item) => item.calo_tieu
 					);
-					res.json({
-						calo_in_total: caloInStatictis,
-						calo_out_total: caloOutStatictis,
-					});
+					res.json(tkFilter);
 				}
 				//Get all
 				else {
@@ -193,6 +191,19 @@ class ThongKeController {
 	// [PUT] /ThongKe/:id
 	update(req, res) {
 		ThongKe.findByIdAndUpdate(req.params.id, req.body)
+			.lean()
+			.then((tk) => res.json(tk))
+			.catch((err) => {
+				res.json({
+					message: err,
+				});
+			});
+	}
+
+	// [Patch] /NguoiDung/:id
+	updatePatch(req, res) {
+		const updateObject=req.body
+		ThongKe.findByIdAndUpdate(req.params.id,  { $set: updateObject }, {new:true})
 			.lean()
 			.then((tk) => res.json(tk))
 			.catch((err) => {

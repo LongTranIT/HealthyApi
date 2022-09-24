@@ -8,6 +8,7 @@ const ThongKe = new Schema(
 		calo_tieu: Number,
 		thuc_don: [{ type: Schema.Types.ObjectId, ref: "thuc_don" }],
 		bai_tap: [{ type: Schema.Types.ObjectId, ref: "bai_tap" }],
+		can_nang: Number
 	},
 	{
 		timestamps: true,
