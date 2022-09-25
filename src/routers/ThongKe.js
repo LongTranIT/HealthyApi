@@ -10,5 +10,6 @@ router.post('/',ThongKeController.create);
 router.put('/:id',ThongKeController.update);
 router.patch('/:id',ThongKeController.updatePatch);
 router.delete('/:id',ThongKeController.delete);
+router.post('/deletemenu/:id',ThongKeController.deleteMenu);
 
 module.exports=router;

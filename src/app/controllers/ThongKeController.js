@@ -60,10 +60,9 @@ class ThongKeController {
 								+new Date(req.query.startDate) &&
 							+new Date(item.ngay) <= +new Date(req.query.endDate)
 					);
-					const caloInStatictis = tkFilter.map(
-						(item) => {
-						item.calo_nap}
-					);
+					const caloInStatictis = tkFilter.map((item) => {
+						item.calo_nap;
+					});
 					const caloOutStatictis = tkFilter.map(
 						(item) => item.calo_tieu
 					);
@@ -79,9 +78,9 @@ class ThongKeController {
 	// [GET] /ThongKe/date
 	getDates(req, res) {
 		NguoiDung.findById(req.query.idNguoiDung)
-			.populate('thong_ke')
+			.populate("thong_ke")
 			.then((result) => {
-				const dates=result.thong_ke.map(item=>item.ngay)
+				const dates = result.thong_ke.map((item) => item.ngay);
 				res.json(dates);
 			})
 			.catch((err) => {
@@ -202,8 +201,12 @@ class ThongKeController {
 
 	// [Patch] /NguoiDung/:id
 	updatePatch(req, res) {
-		const updateObject=req.body
-		ThongKe.findByIdAndUpdate(req.params.id,  { $set: updateObject }, {new:true})
+		const updateObject = req.body;
+		ThongKe.findByIdAndUpdate(
+			req.params.id,
+			{ $set: updateObject },
+			{ new: true }
+		)
 			.lean()
 			.then((tk) => res.json(tk))
 			.catch((err) => {
@@ -218,6 +221,41 @@ class ThongKeController {
 		ThongKe.findByIdAndDelete(req.params.id)
 			.lean()
 			.then((dataDelete) => res.json(dataDelete))
+			.catch((err) => {
+				res.json({
+					message: err,
+				});
+			});
+	}
+	// [POST] /ThongKe/deletemenu/:id
+	deleteMenu(req, res) {
+		ThongKe.findById(req.params.id)
+			.populate("thuc_don")
+			.lean()
+			.then((data) => {
+				const caloMenuRemoved = data.thuc_don.find(
+					(item) => item["_id"] == req.body.idMenu
+				).calo;
+				data.thuc_don = data.thuc_don.filter(
+					(item) => item["_id"] != req.body.idMenu
+				);
+				data.calo_nap -= caloMenuRemoved;
+				ThongKe.findByIdAndUpdate(
+					req.params.id,
+					{ $set: {
+						thuc_don: data.thuc_don,
+						calo_nap: data.calo_nap
+					} },
+					{ new: true }
+				)
+					.lean()
+					.then((tk) => res.json(tk))
+					.catch((err) => {
+						res.json({
+							message: err,
+						});
+					});
+			})
 			.catch((err) => {
 				res.json({
 					message: err,
