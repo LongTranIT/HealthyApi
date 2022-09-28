@@ -1,12 +1,15 @@
-const mongoose=require('mongoose');
+const mongoose = require("mongoose");
 
-const Schema=mongoose.Schema;
-const BaiTap=new Schema({
-    ten: String,
-    chi_tiet_bai_tap:{ type: Schema.Types.ObjectId, ref: 'chi_tiet_bai_tap' },
-},{
-    timestamps:true
-});
+const Schema = mongoose.Schema;
+const BaiTap = new Schema(
+	{
+		ten: String,
+		hinh: String,
+		dong_tac: [{ type: Schema.Types.ObjectId, ref: "dong_tac" }],
+	},
+	{
+		timestamps: true,
+	}
+);
 
-module.exports=mongoose.model('bai_tap',BaiTap);
-
+module.exports = mongoose.model("bai_tap", BaiTap);

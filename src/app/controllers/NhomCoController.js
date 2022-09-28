@@ -1,30 +1,30 @@
-const BaiTap = require("../models/BaiTap");
-class BaiTapController {
-	// [GET] /BaiTap
+const NhomCo = require("../models/NhomCo");
+class NhomCoController {
+	// [GET] /NhomCo
 	show(req, res) {
-		BaiTap.find({})
-			.populate('dong_tac')
+		NhomCo.find({})
+			.populate('bai_tap')
 			.lean()
-			.then((BaiTaps) => res.json(BaiTaps))
+			.then((NhomCos) => res.json(NhomCos))
 			.catch((err) => {
 				message: err;
 			});
 	}
 
-	// [GET] /BaiTap/:id
+	// [GET] /NhomCo/:id
 	detail(req, res) {
-		BaiTap.findById(req.params.id)
-			.populate('dong_tac')
+		NhomCo.findById(req.params.id)
+			.populate('bai_tap')
 			.lean()
-			.then((BaiTap) => res.json(BaiTap))
+			.then((NhomCo) => res.json(NhomCo))
 			.catch((err) => {
 				message: err;
 			});
 	}
 
-	// [POST] /BaiTap
+	// [POST] /NhomCo
 	create(req, res) {
-		const newData = new BaiTap(req.body);
+		const newData = new NhomCo(req.body);
 		newData
 			.save()
 			.then((data) => {
@@ -37,9 +37,9 @@ class BaiTapController {
 			});
 	}
 
-	// [PUT] /BaiTap/:id
+	// [PUT] /NhomCo/:id
 	update(req, res) {
-		BaiTap.findByIdAndUpdate(req.params.id, req.body)
+		NhomCo.findByIdAndUpdate(req.params.id, req.body)
 			.lean()
 			.then((tk) => res.json(tk))
 			.catch((err) => {
@@ -49,9 +49,9 @@ class BaiTapController {
 			});
 	}
 
-	// [DELETE] /BaiTap/:id
+	// [DELETE] /NhomCo/:id
 	delete(req, res) {
-		BaiTap.findByIdAndDelete(req.params.id)
+		NhomCo.findByIdAndDelete(req.params.id)
 			.lean()
 			.then((dataDelete) => res.json(dataDelete))
 			.catch((err) => {
@@ -62,4 +62,4 @@ class BaiTapController {
 	}
 }
 
-module.exports = new BaiTapController();
+module.exports = new NhomCoController();

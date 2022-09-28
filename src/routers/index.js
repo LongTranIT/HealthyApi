@@ -9,9 +9,11 @@ const thongKeRouter=require('./ThongKe');
 const thucDonRouter=require('./ThucDon');
 const thucPhamRouter=require('./ThucPham');
 const loginRouter=require('./Login');
+const nhomCoRouter=require('./NhomCo')
 
 function route(app){
     app.use('/taiKhoan',taiKhoanRouter);
+    app.use('/nhomCo',nhomCoRouter);
     app.use('/baiTap',baiTapRouter);
     app.use('/chiTietBaiTap',chiTietBaiTapRouter);
     app.use('/chiTietThucDon',chiTietThucDonRouter);
