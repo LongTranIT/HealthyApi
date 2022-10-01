@@ -1,6 +1,7 @@
 const ThongKe = require("../models/ThongKe");
 const ThucDon = require("../models/ThucDon");
 const NguoiDung = require("../models/NguoiDung");
+const BaiTap =require("../models/BaiTap");
 class ThongKeController {
 	// [GET] /ThongKe
 	show(req, res) {
@@ -174,19 +175,58 @@ class ThongKeController {
 				});
 			}
 		});
-		// const newData = new ThongKe(req.body);
-		// newData
-		// 	.save()
-		// 	.then((data) => {
-		// 		res.json(data);
-		// 	})
-		// 	.catch((err) => {
-		// 		res.json({
-		// 			message: err,
-		// 		});
-		// 	});
 	}
+	// [POST] /ThongKe/baitap
+	addBaiTap(req, res) {
+		const { ngay, idBaiTap, idNguoiDung } = req.body;
+		Promise.all([
+			NguoiDung.findById(idNguoiDung).populate("thong_ke"),
+			BaiTap.findById(idBaiTap),
+		]).then(([nguoiDungData, bt]) => {
+			const tks = nguoiDungData.thong_ke;
+			const tkUpdate = tks.find((item) => {
+				return +new Date(item.ngay) == +new Date(ngay);
+			});
+			if (tkUpdate) {
+				tkUpdate.bai_tap.push(idBaiTap);
+				tkUpdate.calo_tieu += bt.calo;
 
+				ThongKe.findByIdAndUpdate(
+					tkUpdate["_id"],
+					{
+						$set: {
+							bai_tap: tkUpdate.bai_tap,
+							calo_tieu: tkUpdate.calo_tieu,
+						},
+					},
+					{ new: true }
+				).then((result) => {
+					res.json(result);
+				});
+			} else {
+				const newTk = new ThongKe({
+					ngay,
+					bai_tap: [idBaiTap],
+					bai_tap: [],
+					calo_tieu: bt?.calo,
+					calo_nap: 0,
+				});
+				newTk.save().then((data) => {
+					NguoiDung.findById(idNguoiDung).then((nd) => {
+						nd.thong_ke.push(data["_id"]);
+						NguoiDung.findByIdAndUpdate(idNguoiDung, nd)
+							.lean()
+							.then((tk) => res.json(data))
+							.catch((err) => {
+								res.json({
+									message: err,
+								});
+							});
+					});
+				});
+			}
+		});
+	}
 	// [PUT] /ThongKe/:id
 	update(req, res) {
 		ThongKe.findByIdAndUpdate(req.params.id, req.body)
