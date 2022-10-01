@@ -6,7 +6,7 @@ const ThongKeController=require('../app/controllers/ThongKeController');
 router.get('/',ThongKeController.show);
 router.get('/date',ThongKeController.getDates);
 router.get('/:id',ThongKeController.detail);
-router.post('/',ThongKeController.create);
+router.post('/thucdon',ThongKeController.addMenu);
 router.put('/:id',ThongKeController.update);
 router.patch('/:id',ThongKeController.updatePatch);
 router.delete('/:id',ThongKeController.delete);

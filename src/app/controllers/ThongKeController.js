@@ -124,8 +124,8 @@ class ThongKeController {
 			});
 	}
 
-	// [POST] /ThongKe
-	create(req, res) {
+	// [POST] /ThongKe/thucdon
+	addMenu(req, res) {
 		const { ngay, idThucDon, idNguoiDung } = req.body;
 		Promise.all([
 			NguoiDung.findById(idNguoiDung).populate("thong_ke"),

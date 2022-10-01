@@ -6,6 +6,7 @@ const BaiTap = new Schema(
 		ten: String,
 		hinh: String,
 		dong_tac: [{ type: Schema.Types.ObjectId, ref: "dong_tac" }],
+		calo: Number
 	},
 	{
 		timestamps: true,
