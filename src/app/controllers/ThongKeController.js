@@ -21,12 +21,6 @@ class ThongKeController {
 					},
 					{
 						path: "bai_tap",
-						populate: {
-							path: "chi_tiet_bai_tap",
-							populate: {
-								path: "dong_tac",
-							},
-						},
 					},
 				],
 			})
