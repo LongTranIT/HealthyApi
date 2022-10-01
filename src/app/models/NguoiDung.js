@@ -8,6 +8,7 @@ const NguoiDung = new Schema(
 		chieu_cao: Number,
 		van_dong: Number,
 		calo_muc_tieu: Number,
+		can_nang_muc_tieu: Number,
 		tuoi: Number,
 		gioi_tinh: String,
 		tai_khoan: { type: Schema.Types.ObjectId, ref: 'tai_khoan' },
