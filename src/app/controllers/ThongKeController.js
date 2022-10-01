@@ -201,7 +201,7 @@ class ThongKeController {
 				const newTk = new ThongKe({
 					ngay,
 					bai_tap: [idBaiTap],
-					bai_tap: [],
+					thuc_don: [],
 					calo_tieu: bt?.calo,
 					calo_nap: 0,
 				});
