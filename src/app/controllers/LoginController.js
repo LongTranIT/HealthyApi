@@ -13,7 +13,7 @@ class LoginController {
 					item.tai_khoan.password===account.password
 				)
 				delete result?.tai_khoan
-				res.json(result||{message: 'Invalid account'})
+				res.json(result||{message: 'Thông tin đăng nhập không đúng'})
 			})
 			.catch((err) => {
 				message: err;
